@@ -1,0 +1,76 @@
+
+/* auth.css */
+
+/* Lottie sidebar utility (unchanged) */
+.lottie-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4338ca, #a21caf);
+  padding: 2rem;
+}
+
+/* Form section utility (optional, not used directly) */
+.form-section {
+  padding: 2rem;
+  background: rgba(255,255,255,0.85);
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Alerts (for session messages) */
+.alert {
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.alert-success {
+  background: #e7f6e7;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+.alert-danger {
+  background: #fbe9e7;
+  color: #d32f2f;
+  border: 1px solid #ef9a9a;
+}
+
+/* Consistent input styling for all fields */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.input-field {
+  margin-top: 0.25rem;
+  display: block;
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid #22223b;
+  background: #23233a;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-field:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px #6366f133;
+}
+.input-field::placeholder {
+  color: #bcbcbc;
+  font-style: italic;
+  opacity: 1;
+}
+
+/* Ensure phone number placeholder matches style in all browsers */
+input#phone::placeholder,
+input#phone:-ms-input-placeholder,
+input#phone::-ms-input-placeholder {
+  color: #888 !important;
+  font-style: italic;
+  opacity: 1 !important;
+}

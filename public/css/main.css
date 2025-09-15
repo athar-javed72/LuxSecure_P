@@ -1,0 +1,120 @@
+/* main.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&family=Poppins:wght@400;600&display=swap');
+
+:root {
+  --primary-color: #0A0A23;        /* Midnight Blue */
+  --accent-color: #D4AF37;         /* Champagne Gold */
+  --bg-color: #F8F8F5;             /* Bone */
+  --text-color: #1A1A1A;           /* Deep Charcoal */
+  --secondary-color: #2C2C3E;
+  --radius: 12px;
+  --transition: all 0.3s ease;
+  --glass-white: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --text-light: #f8f8f5;
+  --text-muted: #aaa;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', 'Open Sans', sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+a:hover {
+  color: var(--accent-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--glass-white);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  box-shadow: var(--shadow);
+}
+
+h2, h4 {
+  font-family: 'Playfair Display', serif;
+  color: var(--accent-color);
+  text-align: center;
+}
+h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+h4 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+
+input[type="email"],
+input[type="phone"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #1a1a2e;
+  color: #fff;
+  outline: none;
+}
+
+input:focus {
+  border: 2px solid var(--accent-color);
+  background-color: #1f1f3b;
+}
+
+button, .btn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--accent-color);
+  border: none;
+  border-radius: var(--radius);
+  color: #000;
+  font-weight: bold;
+  transition: var(--transition);
+  cursor: pointer;
+}
+button:hover, .btn:hover {
+  background-color: #bfa231;
+  color: #fff;
+}
+
+.alert {
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.alert-danger {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #ffcccc;
+}
+
+.alert-success {
+  background-color: rgba(0, 128, 0, 0.2);
+  color: #b4ffb4;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
