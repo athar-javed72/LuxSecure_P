@@ -25,7 +25,7 @@ A modern Laravel-based web application for property management and secure user a
 - PHP 8.1 or higher
 - Composer
 - Node.js & NPM
-- MySQL or PostgreSQL database
+- MySQL or PostgreSQL databas
 
 ## Installation
 
