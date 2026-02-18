@@ -3,38 +3,38 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Property;
+use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    // Show login form
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Show register form
     public function showRegisterForm()
     {
         return view('auth.register');
     }
 
-    // Show forgot password form
     public function showForgotForm()
     {
         return view('auth.forgot-password');
     }
 
-    // Show reset password form
     public function showResetForm($token)
     {
         return view('auth.reset-password', ['token' => $token]);
     }
 
-    // Login
     public function login(Request $request)
     {
         $request->validate([
@@ -42,32 +42,38 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->intended(route('profile'));
+        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            if ($request->user()->hasVerifiedEmail()) {
+                return redirect()->intended(route('profile'));
+            }
+            return redirect()->route('verification.notice');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
-    // Register
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
+            'phone' => 'nullable|string|max:20|regex:/^[0-9+\-\s()]+$/',
             'password' => 'required|min:8|confirmed',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone ?: null,
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect('login')->with('success', 'Registration successful. Please login.');
+        event(new \Illuminate\Auth\Events\Registered($user));
+
+        return redirect('login')->with('success', 'Registration successful. Please verify your email and login.');
     }
 
-    // Logout
     public function logout(Request $request)
     {
         Auth::logout();
@@ -76,179 +82,90 @@ class AuthController extends Controller
         return redirect('/login')->with('status', 'Logged out successfully.');
     }
 
-    // Send reset link (stub)
     public function sendResetLink(Request $request)
     {
-        // For now, just redirect back with success
-        return back()->with('success', 'Reset link sent (feature coming soon)');
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return back()->with('success', __($status));
+        }
+        return back()->withErrors(['email' => __($status)]);
     }
 
-    // Reset password (stub)
     public function resetPassword(Request $request)
     {
-        // For now, just redirect to login
-        return redirect('login')->with('success', 'Password reset (feature coming soon)');
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill(['password' => Hash::make($password), 'remember_token' => Str::random(60)])->save();
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return redirect('login')->with('success', 'Your password has been reset.');
+        }
+        return back()->withErrors(['email' => __($status)]);
     }
 
-    // Verify notice (stub)
     public function verifyNotice()
     {
         return view('auth.verify-email');
     }
 
-    // Home page with house listings
+    public function verifyEmail(Request $request, $id, $hash)
+    {
+        $user = User::findOrFail($id);
+        if (!hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+            abort(403);
+        }
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('profile')->with('success', 'Email already verified.');
+        }
+        $user->markEmailAsVerified();
+        event(new Verified($user));
+        return redirect()->route('profile')->with('success', 'Email verified successfully.');
+    }
+
+    public function resendVerification(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect()->route('profile');
+        }
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('success', 'Verification link sent!');
+    }
+
     public function home()
     {
-        $houses = [
-            [
-                'title' => 'Modern Family House',
-                'location' => 'DHA Phase 6, Karachi',
-                'price' => 'PKR 5.2 Crore',
-                'image' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Luxury Villa',
-                'location' => 'Bahria Town, Lahore',
-                'price' => 'PKR 8.5 Crore',
-                'image' => 'https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Cozy Apartment',
-                'location' => 'Gulberg, Islamabad',
-                'price' => 'PKR 2.1 Crore',
-                'image' => 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Classic Bungalow',
-                'location' => 'Clifton, Karachi',
-                'price' => 'PKR 6.3 Crore',
-                'image' => 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=600&q=80',
-            ],
-        ];
+        $houses = Property::where('is_active', true)
+            ->with('images')
+            ->latest()
+            ->take(8)
+            ->get()
+            ->map(fn ($p) => [
+                'title' => $p->title,
+                'location' => $p->location,
+                'price' => 'PKR ' . number_format($p->price / 1_00_00_000, 1) . ' Crore',
+                'image' => $p->primary_image_url,
+            ]);
+
+        if ($houses->isEmpty()) {
+            $houses = collect([
+                ['title' => 'Modern Family House', 'location' => 'DHA Phase 6, Karachi', 'price' => 'PKR 5.2 Crore', 'image' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80'],
+                ['title' => 'Luxury Villa', 'location' => 'Bahria Town, Lahore', 'price' => 'PKR 8.5 Crore', 'image' => 'https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=600&q=80'],
+                ['title' => 'Cozy Apartment', 'location' => 'Gulberg, Islamabad', 'price' => 'PKR 2.1 Crore', 'image' => 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80'],
+                ['title' => 'Classic Bungalow', 'location' => 'Clifton, Karachi', 'price' => 'PKR 6.3 Crore', 'image' => 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=600&q=80'],
+            ]);
+        }
         return view('home', compact('houses'));
-    }
-
-    // Properties page
-    public function properties()
-    {
-        $properties = [
-            [
-                'title' => 'Modern Family House',
-                'location' => 'DHA Phase 6, Karachi',
-                'type' => 'House',
-                'price' => 'PKR 5.2 Crore',
-                'price_num' => 52000000,
-                'image' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Luxury Villa',
-                'location' => 'Bahria Town, Lahore',
-                'type' => 'Villa',
-                'price' => 'PKR 8.5 Crore',
-                'price_num' => 85000000,
-                'image' => 'https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Cozy Apartment',
-                'location' => 'Gulberg, Islamabad',
-                'type' => 'Apartment',
-                'price' => 'PKR 2.1 Crore',
-                'price_num' => 21000000,
-                'image' => 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Classic Bungalow',
-                'location' => 'Clifton, Karachi',
-                'type' => 'Bungalow',
-                'price' => 'PKR 6.3 Crore',
-                'price_num' => 63000000,
-                'image' => 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Skyline Penthouse',
-                'location' => 'Blue Area, Islamabad',
-                'type' => 'Apartment',
-                'price' => 'PKR 12 Crore',
-                'price_num' => 120000000,
-                'image' => 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Palm Grove Villa',
-                'location' => 'DHA Phase 8, Karachi',
-                'type' => 'Villa',
-                'price' => 'PKR 10.7 Crore',
-                'price_num' => 107000000,
-                'image' => 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Urban Studio',
-                'location' => 'F-11, Islamabad',
-                'type' => 'Apartment',
-                'price' => 'PKR 1.8 Crore',
-                'price_num' => 18000000,
-                'image' => 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Green Meadows House',
-                'location' => 'Askari 11, Lahore',
-                'type' => 'House',
-                'price' => 'PKR 4.6 Crore',
-                'price_num' => 46000000,
-                'image' => 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Sunset Bungalow',
-                'location' => 'PECHS, Karachi',
-                'type' => 'Bungalow',
-                'price' => 'PKR 7.9 Crore',
-                'price_num' => 79000000,
-                'image' => 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=600&q=80',
-            ],
-            [
-                'title' => 'Royal Palace Villa',
-                'location' => 'Model Town, Lahore',
-                'type' => 'Villa',
-                'price' => 'PKR 15 Crore',
-                'price_num' => 150000000,
-                'image' => 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&q=80',
-            ],
-            [
-                'title' => 'Lakeview House',
-                'location' => 'Lake City, Lahore',
-                'type' => 'House',
-                'price' => 'PKR 3.7 Crore',
-                'price_num' => 37000000,
-                'image' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-            ],
-            [
-                'title' => 'Executive Apartment',
-                'location' => 'Gulshan-e-Iqbal, Karachi',
-                'type' => 'Apartment',
-                'price' => 'PKR 2.9 Crore',
-                'price_num' => 29000000,
-                'image' => 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80',
-            ],
-            [
-                'title' => 'Hilltop Bungalow',
-                'location' => 'Pir Sohawa, Islamabad',
-                'type' => 'Bungalow',
-                'price' => 'PKR 9.2 Crore',
-                'price_num' => 92000000,
-                'image' => 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80',
-            ],
-        ];
-        return view('properties', compact('properties'));
-    }
-
-    // Contact page
-    public function contact()
-    {
-        return view('contact');
-    }
-
-    // Profile page
-    public function profile()
-    {
-        return view('profile');
     }
 }
