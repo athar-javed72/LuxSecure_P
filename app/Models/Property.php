@@ -40,7 +40,9 @@ class Property extends Model
 
     public function getPrimaryImageUrlAttribute(): string
     {
-        $first = $this->images()->first();
+        $first = $this->relationLoaded('images') && $this->images->isNotEmpty()
+            ? $this->images->first()
+            : $this->images()->first();
         if ($first) {
             return asset('storage/' . $first->path);
         }
