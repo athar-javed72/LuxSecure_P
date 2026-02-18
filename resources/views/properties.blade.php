@@ -1,9 +1,11 @@
 @extends('include.master')
 
+@section('title', 'Find Your Dream Property | LuxSecure')
+
 @section('content')
 <div class="bg-gray-50 min-h-screen py-10">
     <div class="max-w-7xl mx-auto px-4">
-    <h1 class="text-4xl font-bold mb-6 text-indigo-900 mt-10">Find Your Dream Property</h1>
+        <h1 class="text-4xl font-bold mb-6 text-indigo-900 mt-10">Find Your Dream Property</h1>
         <!-- Filters & Search -->
         <div class="mb-10">
             <form method="GET" class="w-full">
@@ -16,10 +18,9 @@
                         <label for="type" class="block text-xs font-semibold text-gray-600 mb-1">Type</label>
                         <select id="type" name="type" class="input-field bg-gray-900 text-white border-0 focus:ring-2 focus:ring-indigo-400 h-12">
                             <option value="">All Types</option>
-                            <option value="House" {{ request('type') == 'House' ? 'selected' : '' }}>House</option>
-                            <option value="Villa" {{ request('type') == 'Villa' ? 'selected' : '' }}>Villa</option>
-                            <option value="Apartment" {{ request('type') == 'Apartment' ? 'selected' : '' }}>Apartment</option>
-                            <option value="Bungalow" {{ request('type') == 'Bungalow' ? 'selected' : '' }}>Bungalow</option>
+                            @foreach(\App\Models\Property::TYPES as $t)
+                                <option value="{{ $t }}" {{ request('type') == $t ? 'selected' : '' }}>{{ $t }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="w-full md:w-48 flex flex-col">
@@ -40,43 +41,30 @@
             </form>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            @php
-                $filtered = collect($properties)
-                    ->filter(function($property) {
-                        $search = request('search');
-                        $type = request('type');
-                        $price = request('price');
-                        $matches = true;
-                        if ($search) {
-                            $matches = $matches && (stripos($property['title'], $search) !== false || stripos($property['location'], $search) !== false);
-                        }
-                        if ($type) {
-                            $matches = $matches && (isset($property['type']) && $property['type'] === $type);
-                        }
-                        if ($price) {
-                            [$min, $max] = explode('-', $price);
-                            $matches = $matches && (isset($property['price_num']) && $property['price_num'] >= $min && $property['price_num'] <= $max);
-                        }
-                        return $matches;
-                    });
-            @endphp
-            @forelse($filtered as $property)
+            @forelse($properties as $property)
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
                     <div class="relative">
-                        <img src="{{ $property['image'] }}" alt="{{ $property['title'] }}" class="w-full h-56 object-cover">
-                        @if(isset($property['badge']))
-                            <span class="absolute top-3 left-3 bg-yellow-400 text-xs font-bold px-3 py-1 rounded-full shadow">{{ $property['badge'] }}</span>
-                        @endif
+                        <a href="{{ route('properties.show', $property) }}">
+                            <img src="{{ $property->primary_image_url }}" alt="{{ $property->title }}" class="w-full h-56 object-cover">
+                        </a>
+                        @auth
+                            <form action="{{ route('favorites.toggle', $property) }}" method="POST" class="absolute top-3 right-3">
+                                @csrf
+                                @php $isFav = auth()->user()->favorites->contains($property); @endphp
+                                <button type="submit" class="p-2 rounded-full {{ $isFav ? 'bg-red-500 text-white' : 'bg-white/90 text-gray-700' }} shadow hover:bg-red-500 hover:text-white transition">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </form>
+                        @endauth
                     </div>
                     <div class="p-6 flex-1 flex flex-col">
-                        <h2 class="text-2xl font-semibold mb-1 text-indigo-800">{{ $property['title'] }}</h2>
-                        <p class="text-gray-600 mb-1">{{ $property['location'] }}</p>
-                        <p class="text-indigo-700 font-bold text-lg mb-2">{{ $property['price'] }}</p>
-                        @if(isset($property['type']))
-                            <span class="inline-block bg-indigo-100 text-indigo-700 text-xs px-2 py-1 rounded mb-2">{{ $property['type'] }}</span>
-                        @endif
-                        <div class="mt-auto">
-                            <a href="{{ url('/contact') }}" class="block w-full text-center bg-green-600 text-white py-2 rounded hover:bg-green-700 font-semibold transition">Contact Agent</a>
+                        <h2 class="text-2xl font-semibold mb-1 text-indigo-800"><a href="{{ route('properties.show', $property) }}" class="hover:underline">{{ $property->title }}</a></h2>
+                        <p class="text-gray-600 mb-1">{{ $property->location }}</p>
+                        <p class="text-indigo-700 font-bold text-lg mb-2">PKR {{ number_format($property->price / 1_00_00_000, 1) }} Crore</p>
+                        <span class="inline-block bg-indigo-100 text-indigo-700 text-xs px-2 py-1 rounded mb-2">{{ $property->type }}</span>
+                        <div class="mt-auto flex gap-2">
+                            <a href="{{ route('properties.show', $property) }}" class="flex-1 text-center bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 font-semibold transition">View Details</a>
+                            <a href="{{ url('/contact') }}" class="flex-1 text-center bg-green-600 text-white py-2 rounded hover:bg-green-700 font-semibold transition">Contact Agent</a>
                         </div>
                     </div>
                 </div>
@@ -86,6 +74,11 @@
                 </div>
             @endforelse
         </div>
+        @if($properties->hasPages())
+            <div class="mt-10 flex justify-center">
+                {{ $properties->links() }}
+            </div>
+        @endif
     </div>
 </div>
 @endsection
