@@ -12,8 +12,15 @@
         <div class="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8">
             <div class="text-center">
                 <h2 class="text-3xl font-extrabold text-white mb-4">Verify Your Email</h2>
+                @if (session('success'))
+                    <p class="text-green-300 mb-4">{{ session('success') }}</p>
+                @endif
                 <p class="text-gray-300 mb-6">Please check your email and click the verification link to continue.</p>
-                <a href="{{ route('login.form') }}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition">Back to Login</a>
+                <form method="POST" action="{{ route('verification.send') }}" class="inline-block mb-2">
+                    @csrf
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition w-full">Resend verification email</button>
+                </form>
+                <a href="{{ route('login.form') }}" class="inline-block text-gray-300 hover:text-white mt-2">Back to Login</a>
             </div>
         </div>
     </div>
