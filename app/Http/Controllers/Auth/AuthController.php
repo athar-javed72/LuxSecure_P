@@ -44,10 +44,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $request->session()->regenerate();
-            if ($request->user()->hasVerifiedEmail()) {
-                return redirect()->intended(route('profile'));
-            }
-            return redirect()->route('verification.notice');
+            // Always allow access to profile; verification is optional (email may not be configured)
+            return redirect()->intended(route('profile'));
         }
 
         return back()->withErrors(['email' => 'Invalid credentials']);
@@ -69,9 +67,17 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Local / development: auto-verify so user can login without email (no mail setup needed)
+        if (app()->environment('local')) {
+            $user->update(['email_verified_at' => now()]);
+        }
+
         event(new \Illuminate\Auth\Events\Registered($user));
 
-        return redirect('login')->with('success', 'Registration successful. Please verify your email and login.');
+        $message = app()->environment('local')
+            ? 'Registration successful. You can login now.'
+            : 'Registration successful. Please verify your email and login.';
+        return redirect('login')->with('success', $message);
     }
 
     public function logout(Request $request)

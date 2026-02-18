@@ -34,8 +34,8 @@ Route::get('/properties/{property}', [PropertyController::class, 'show'])->name(
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-// Profile & Favorites (auth required)
-Route::middleware(['auth', 'verified'])->group(function () {
+// Profile & Favorites (auth required; email verification not required so users aren't stuck if mail isn't set up)
+Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/favorites/{property}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
@@ -44,6 +44,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Admin panel
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+    Route::get('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'show'])->name('users.show');
+    Route::get('users/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('users.edit');
+    Route::put('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+    Route::delete('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
     Route::resource('properties', \App\Http\Controllers\Admin\PropertyController::class);
     Route::get('inquiries', [\App\Http\Controllers\Admin\InquiryController::class, 'index'])->name('inquiries.index');
     Route::patch('inquiries/{inquiry}', [\App\Http\Controllers\Admin\InquiryController::class, 'markRead'])->name('inquiries.markRead');

@@ -12,8 +12,9 @@
     <header class="bg-indigo-900 text-white shadow">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             <a href="{{ route('admin.dashboard') }}" class="font-bold text-xl">LuxSecure Admin</a>
-            <nav class="flex gap-4">
+            <nav class="flex gap-4 flex-wrap">
                 <a href="{{ route('admin.dashboard') }}" class="hover:underline">Dashboard</a>
+                <a href="{{ route('admin.users.index') }}" class="hover:underline">Users</a>
                 <a href="{{ route('admin.properties.index') }}" class="hover:underline">Properties</a>
                 <a href="{{ route('admin.inquiries.index') }}" class="hover:underline">Inquiries</a>
                 <a href="{{ route('home') }}" class="hover:underline" target="_blank">View Site</a>
@@ -27,6 +28,9 @@
     <main class="max-w-7xl mx-auto px-4 py-8">
         @if (session('success'))
             <div class="mb-4 p-4 bg-green-100 text-green-800 rounded-lg">{{ session('success') }}</div>
+        @endif
+        @if (session('error'))
+            <div class="mb-4 p-4 bg-red-100 text-red-800 rounded-lg">{{ session('error') }}</div>
         @endif
         @yield('content')
     </main>
