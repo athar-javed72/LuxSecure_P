@@ -43,9 +43,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Admin panel
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('properties', App\Http\Controllers\Admin\PropertyController::class);
-    Route::get('inquiries', [App\Http\Controllers\Admin\InquiryController::class, 'index'])->name('inquiries.index');
-    Route::patch('inquiries/{inquiry}', [App\Http\Controllers\Admin\InquiryController::class, 'markRead'])->name('inquiries.markRead');
+    Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('properties', \App\Http\Controllers\Admin\PropertyController::class);
+    Route::get('inquiries', [\App\Http\Controllers\Admin\InquiryController::class, 'index'])->name('inquiries.index');
+    Route::patch('inquiries/{inquiry}', [\App\Http\Controllers\Admin\InquiryController::class, 'markRead'])->name('inquiries.markRead');
 });
 
