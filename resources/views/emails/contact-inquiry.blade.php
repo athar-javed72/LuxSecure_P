@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Contact Inquiry</title>
+</head>
+<body style="font-family: sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2 style="color: #4F46E5;">New Contact Inquiry</h2>
+    <p><strong>From:</strong> {{ $inquiry->name }}</p>
+    <p><strong>Email:</strong> {{ $inquiry->email }}</p>
+    <p><strong>Message:</strong></p>
+    <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+        {{ $inquiry->message }}
+    </div>
+    <p style="color: #666; font-size: 12px;">Received at {{ $inquiry->created_at->format('F j, Y g:i A') }}</p>
+</body>
+</html>

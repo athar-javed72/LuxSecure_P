@@ -2,27 +2,50 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FavoriteController;
 
 // Logout route
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Home Page
 Route::get('/', [AuthController::class, 'home'])->name('home');
-// Auth pages (just showing views)
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
+
+// Auth
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form')->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form')->middleware('guest');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request');
+Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request')->middleware('guest');
 Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
-Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset')->middleware('guest');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
-// Email verification stub (for future)
-Route::get('/email/verify', [AuthController::class, 'verifyNotice'])->name('verification.notice');
-// Properties page
-Route::get('/properties', [AuthController::class, 'properties'])->name('properties');
-// Contact page
-Route::get('/contact', [AuthController::class, 'contact'])->name('contact');
-// Profile page (protected)
-Route::get('/profile', [AuthController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/email/verify', [AuthController::class, 'verifyNotice'])->name('verification.notice')->middleware('auth');
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verification.verify')->middleware(['auth', 'signed']);
+Route::post('/email/verification-notification', [AuthController::class, 'resendVerification'])->name('verification.send')->middleware(['auth', 'throttle:6,1']);
+
+// Properties (public)
+Route::get('/properties', [PropertyController::class, 'index'])->name('properties');
+Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
+
+// Contact
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Profile & Favorites (auth required)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/favorites/{property}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+});
+
+// Admin panel
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('properties', App\Http\Controllers\Admin\PropertyController::class);
+    Route::get('inquiries', [App\Http\Controllers\Admin\InquiryController::class, 'index'])->name('inquiries.index');
+    Route::patch('inquiries/{inquiry}', [App\Http\Controllers\Admin\InquiryController::class, 'markRead'])->name('inquiries.markRead');
+});
 
