@@ -20,6 +20,9 @@
         </a>
         <nav class="hidden md:flex space-x-4">
             @if(Auth::check())
+                @if(Auth::user()->isAdmin())
+                    <a href="{{ route('admin.dashboard') }}" class="px-5 py-2 rounded-lg bg-amber-600/80 hover:bg-amber-700 text-white font-semibold shadow-md transition">Admin</a>
+                @endif
                 <a href="{{ route('profile') }}" class="px-5 py-2 rounded-lg bg-blue-600/80 hover:bg-blue-700 text-white font-semibold shadow-md transition">My Profile</a>
                 <span class="text-white font-semibold px-3 py-2">Welcome, {{ Auth::user()->name }}</span>
                 <form method="POST" action="{{ route('logout') }}" class="inline">

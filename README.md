@@ -1,201 +1,97 @@
-# LuxSecure_P
+# LuxSecure
 
-A modern Laravel-based web application for property management and secure user authentication. This project provides a comprehensive platform for managing properties with user registration, login, profile management, and property listings.
+A production-ready Laravel property listing and management platform with user authentication, admin panel, favorites, contact inquiries, and REST API.
 
 ## Features
 
-- **User Authentication**: Complete authentication system including registration, login, password reset, and email verification
-- **Property Management**: Dedicated properties page for browsing and managing property listings
-- **User Profiles**: Secure profile management for authenticated users
-- **Contact System**: Contact page for user inquiries
-- **Responsive Design**: Modern, mobile-friendly user interface
-- **API Ready**: Built with Laravel Sanctum for API authentication support
+- **User Authentication**: Register, login, logout, password reset (email), email verification
+- **User Profile**: View and edit name/email/phone; view saved (favorite) properties
+- **Properties**: Public listing with search (location/title), filter by type and price range, pagination, property detail page
+- **Favorites / Wishlist**: Logged-in users can save properties; list visible on profile
+- **Contact Form**: Validated submissions stored in DB; optional email notification to admin
+- **Admin Panel** (`/admin`): Dashboard (users, properties, inquiries), full Property CRUD, image uploads, manage contact inquiries (view, mark as read)
+- **Admin Auth**: Role-based access (`admin` vs `user`); admin middleware protects `/admin` routes
+- **REST API**: `GET /api/properties` with filters and pagination; optional Sanctum-protected `/api/properties/favorites`
+- **Custom Error Pages**: 404 and 503
+- **Responsive UI**: Mobile-friendly layout with Tailwind-style styling
 
 ## Tech Stack
 
-- **Backend**: Laravel 10.x
-- **Frontend**: Blade Templates, Vite
-- **Database**: MySQL/PostgreSQL (configurable)
-- **Authentication**: Laravel Sanctum
-- **Styling**: Custom CSS with responsive design
-- **Build Tool**: Vite for asset compilation
+- **Backend**: Laravel 10.x, PHP 8.1+
+- **Frontend**: Blade, Tailwind (CDN), Font Awesome, Lottie
+- **Database**: MySQL/PostgreSQL/SQLite
+- **Auth**: Laravel session + Laravel Sanctum (API)
+- **Storage**: Local/public disk for property images
 
 ## Requirements
 
-- PHP 8.1 or higher
+- PHP 8.1+
 - Composer
-- Node.js & NPM
-- MySQL or PostgreSQL databas
+- Node.js & NPM (for Vite; optional if using CDN assets only)
+- MySQL / PostgreSQL / SQLite
 
 ## Installation
 
-1. **Clone the repository**
+1. **Clone and install**
    ```bash
    git clone <repository-url>
    cd LuxSecure_P
-   ```
-
-2. **Install PHP dependencies**
-   ```bash
    composer install
+   npm install   # optional, for Vite
    ```
 
-3. **Install Node.js dependencies**
-   ```bash
-   npm install
-   ```
-
-4. **Environment Configuration**
+2. **Environment**
    ```bash
    cp .env.example .env
-   ```
-
-   Update the `.env` file with your database credentials and other configuration settings:
-   ```env
-   APP_NAME=LuxSecure_P
-   APP_ENV=local
-   APP_KEY=
-   APP_DEBUG=true
-   APP_URL=http://localhost
-
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=your_database_name
-   DB_USERNAME=your_username
-   DB_PASSWORD=your_password
-   ```
-
-5. **Generate Application Key**
-   ```bash
    php artisan key:generate
    ```
+   Set `APP_URL`, `DB_*`, and optionally `MAIL_*` in `.env`.
 
-6. **Run Database Migrations**
+3. **Database and storage**
    ```bash
    php artisan migrate
+   php artisan storage:link
+   php artisan db:seed
    ```
+   Seeder creates admin user `admin@luxsecure.com` / `password` and sample properties.
 
-7. **Build Assets**
-   ```bash
-   npm run build
-   # or for development
-   npm run dev
-   ```
-
-8. **Start the Development Server**
+4. **Run**
    ```bash
    php artisan serve
    ```
-
-   Visit `http://localhost:8000` in your browser.
+   Open `http://localhost:8000`. Login as admin to access `/admin`.
 
 ## Usage
 
-### Authentication
-- Register a new account at `/register`
-- Login at `/login`
-- Reset password via `/forgot-password`
-- Access protected profile at `/profile` (requires authentication)
+- **Home**: `/` — featured properties (from DB or fallback placeholders)
+- **Properties**: `/properties` — search, filter, paginate; click for detail and “Contact Agent”
+- **Contact**: `/contact` — submit inquiry (saved in DB; optional admin email)
+- **Register**: `/register` — name, email, optional phone, password; verification email sent
+- **Login**: `/login` — after login, unverified users are sent to email verification notice
+- **Profile**: `/profile` — view/edit profile, view saved properties, quick actions
+- **Admin**: `/admin` — dashboard, properties CRUD, inquiries (admin user only)
 
-### Navigation
-- **Home**: Main landing page
-- **Properties**: Browse property listings
-- **Contact**: Contact form and information
-- **Profile**: User profile management (authenticated users only)
+## API
 
-## Development
+- `GET /api/properties` — List active properties. Query: `search`, `type`, `price_min`, `price_max`, `per_page` (max 50)
+- `GET /api/user` — Current user (requires `Authorization: Bearer {token}` via Sanctum)
+- `GET /api/properties/favorites` — Authenticated user’s favorite properties (Sanctum)
 
-### Running in Development Mode
+## Testing
+
 ```bash
-# Start Laravel development server
-php artisan serve
-
-# Start Vite development server for asset hot reloading
-npm run dev
-```
-
-### Testing
-```bash
-# Run PHP tests
 php artisan test
-
-# Run with coverage
-php artisan test --coverage
 ```
 
-### Code Quality
-```bash
-# Run Laravel Pint for code formatting
-./vendor/bin/pint
+Includes basic tests for registration, login, property listing, and API.
 
-# Run PHPStan for static analysis (if configured)
-# php artisan code:analyse
-```
+## Deployment
 
-## Project Structure
-
-```
-LuxSecure_P/
-├── app/                    # Application logic
-│   ├── Console/           # Artisan commands
-│   ├── Exceptions/        # Exception handlers
-│   ├── Http/             # HTTP layer
-│   │   ├── Controllers/  # Controllers
-│   │   ├── Middleware/   # Middleware
-│   └── Models/           # Eloquent models
-├── bootstrap/             # Application bootstrap
-├── config/                # Configuration files
-├── database/              # Database migrations and seeders
-├── public/                # Public assets
-├── resources/             # Views and uncompiled assets
-│   ├── css/              # Stylesheets
-│   ├── js/               # JavaScript files
-│   └── views/            # Blade templates
-├── routes/                # Route definitions
-├── storage/               # File storage
-├── tests/                 # Test files
-└── vendor/                # Composer dependencies
-```
-
-## API Endpoints
-
-The application includes API support via Laravel Sanctum:
-
-- `POST /api/login` - User login
-- `POST /api/register` - User registration
-- `POST /api/logout` - User logout
-- `GET /api/user` - Get authenticated user (protected)
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Security
-
-This application implements several security best practices:
-- CSRF protection on all forms
-- Secure password hashing
-- Session management
-- Input validation and sanitization
-- SQL injection prevention via Eloquent ORM
+- Point document root to `public/`
+- Run `php artisan migrate --force`, `php artisan storage:link`, `php artisan config:cache`
+- Set `APP_ENV=production`, `APP_DEBUG=false`, strong `APP_KEY`
+- Configure queue worker if using queued mail/jobs
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-For support, email support@luxsecure.com or create an issue in this repository.
-
-## Acknowledgments
-
-- Laravel Framework
-- Laravel Sanctum
-- Laravel Breeze
-- Vite
-- All contributors and the Laravel community
+MIT.

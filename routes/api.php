@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PropertyApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -7,13 +8,16 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// Public: list properties with filters and pagination
+Route::get('/properties', [PropertyApiController::class, 'index']);
+
+// Optional: protected route example (requires Sanctum token)
+Route::middleware('auth:sanctum')->get('/properties/favorites', function (Request $request) {
+    return $request->user()->favorites()->with('images')->get();
 });

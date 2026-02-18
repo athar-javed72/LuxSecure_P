@@ -12,7 +12,10 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         $user->load('favorites.images');
-        return view('profile', ['user' => $user]);
+        return view('profile', [
+            'user' => $user,
+            'showEdit' => $request->boolean('edit'),
+        ]);
     }
 
     public function update(Request $request): RedirectResponse

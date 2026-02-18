@@ -33,8 +33,8 @@
                     <input id="email" type="email" name="email" placeholder="e.g. ayesha@email.com" value="{{ old('email') }}" required class="input-field">
                 </div>
                 <div class="form-group">
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                    <input id="phone" type="tel" name="phone" placeholder="03xx-xxxxxxx" value="{{ old('phone') }}" required class="input-field">
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number <span class="text-gray-400">(optional)</span></label>
+                    <input id="phone" type="tel" name="phone" placeholder="03xx-xxxxxxx" value="{{ old('phone') }}" class="input-field">
                 </div>
                 <div class="form-group">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
