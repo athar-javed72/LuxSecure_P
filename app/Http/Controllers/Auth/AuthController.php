@@ -155,23 +155,70 @@ class AuthController extends Controller
         $houses = Property::where('is_active', true)
             ->with('images')
             ->latest()
-            ->take(8)
+            ->take(12)
             ->get()
             ->map(fn ($p) => [
                 'title' => $p->title,
                 'location' => $p->location,
                 'price' => 'PKR ' . number_format($p->price / 1_00_00_000, 1) . ' Crore',
                 'image' => $p->primary_image_url,
+                'url' => route('properties.show', $p),
             ]);
 
         if ($houses->isEmpty()) {
             $houses = collect([
-                ['title' => 'Modern Family House', 'location' => 'DHA Phase 6, Karachi', 'price' => 'PKR 5.2 Crore', 'image' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80'],
-                ['title' => 'Luxury Villa', 'location' => 'Bahria Town, Lahore', 'price' => 'PKR 8.5 Crore', 'image' => 'https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=600&q=80'],
-                ['title' => 'Cozy Apartment', 'location' => 'Gulberg, Islamabad', 'price' => 'PKR 2.1 Crore', 'image' => 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80'],
-                ['title' => 'Classic Bungalow', 'location' => 'Clifton, Karachi', 'price' => 'PKR 6.3 Crore', 'image' => 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=600&q=80'],
+                [
+                    'title' => 'Modern Family House',
+                    'location' => 'DHA Phase 6, Karachi',
+                    'price' => 'PKR 5.2 Crore',
+                    'image' => 'https://images.unsplash.com/photo-1502673530728-f79b4cab31b1?auto=format&fit=crop&w=800&q=80',
+                    'url' => route('properties'),
+                ],
+                [
+                    'title' => 'Luxury Villa',
+                    'location' => 'Bahria Town, Lahore',
+                    'price' => 'PKR 8.5 Crore',
+                    'image' => 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&q=80',
+                    'url' => route('properties'),
+                ],
+                [
+                    'title' => 'Cozy Apartment',
+                    'location' => 'Gulberg, Islamabad',
+                    'price' => 'PKR 2.1 Crore',
+                    'image' => 'https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=800&q=80',
+                    'url' => route('properties'),
+                ],
+                [
+                    'title' => 'Classic Bungalow',
+                    'location' => 'Clifton, Karachi',
+                    'price' => 'PKR 6.3 Crore',
+                    'image' => 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80',
+                    'url' => route('properties'),
+                ],
+                [
+                    'title' => 'Canal View Residence',
+                    'location' => 'Canal Road, Lahore',
+                    'price' => 'PKR 4.8 Crore',
+                    'image' => 'https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=800&q=80',
+                    'url' => route('properties'),
+                ],
+                [
+                    'title' => 'Skyline Penthouse',
+                    'location' => 'Blue Area, Islamabad',
+                    'price' => 'PKR 12.9 Crore',
+                    'image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
+                    'url' => route('properties'),
+                ],
+                [
+                    'title' => 'Golf Facing Villa',
+                    'location' => 'DHA Valley, Islamabad',
+                    'price' => 'PKR 9.7 Crore',
+                    'image' => 'https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=800&q=80',
+                    'url' => route('properties'),
+                ],
             ]);
         }
+
         return view('home', compact('houses'));
     }
 }
