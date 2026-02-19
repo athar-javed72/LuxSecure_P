@@ -1,6 +1,6 @@
 @extends('include.master')
 
-@section('title', 'My Profile | LuxSecure')
+@section('title', 'My Profile')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
@@ -82,11 +82,14 @@
         @endif
 
         <!-- Saved / Favorites -->
-        <div class="border-t border-gray-200 pt-8">
+        <div id="favorites" class="border-t border-gray-200 pt-8 scroll-mt-24">
             <h2 class="text-2xl font-bold text-indigo-800 mb-4">Saved Properties</h2>
             @if($user->favorites->isEmpty())
-                <p class="text-gray-600 mb-4">You haven't saved any properties yet.</p>
-                <a href="{{ route('properties') }}" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 inline-block">Browse properties</a>
+                <div class="text-center py-8 px-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <i class="fas fa-heart text-4xl text-slate-300 mb-3" aria-hidden="true"></i>
+                    <p class="text-slate-600 mb-4">You haven't saved any properties yet.</p>
+                    <a href="{{ route('properties') }}" class="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">Browse properties <i class="fas fa-arrow-right text-sm" aria-hidden="true"></i></a>
+                </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($user->favorites as $fav)

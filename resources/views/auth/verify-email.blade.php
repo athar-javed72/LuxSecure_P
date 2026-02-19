@@ -1,6 +1,6 @@
 @extends('include.master')
 
-@section('title', 'Verify Email | LuxSecure')
+@section('title', 'Verify Email')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">

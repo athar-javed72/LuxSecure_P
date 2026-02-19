@@ -41,7 +41,7 @@ LuxSecure is an **in-house product** of **Nexora Labs**, the official software h
 1. **Clone and install**
    ```bash
    git clone <repository-url>
-   cd LuxSecure_P
+   cd LuxSecure
    composer install
    npm install   # optional, for Vite
    ```

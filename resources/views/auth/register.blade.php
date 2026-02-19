@@ -1,6 +1,7 @@
 @extends('include.master')
 
 @section('title', 'Register')
+@section('meta_description', 'Create your LuxSecure account to save properties and contact agents.')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">

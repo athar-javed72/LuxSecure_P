@@ -1,11 +1,14 @@
 @extends('include.master')
 
-@section('title', 'Find Your Dream Property | LuxSecure')
+@section('title', 'Find Your Dream Property')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen py-10">
+<div class="min-h-screen py-10 bg-gradient-to-b from-slate-50 to-white">
     <div class="max-w-7xl mx-auto px-4">
-        <h1 class="text-4xl font-bold mb-6 text-indigo-900 mt-10">Find Your Dream Property</h1>
+        <div class="pt-6 pb-2">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2">Find Your Dream Property</h1>
+            <p class="text-slate-600">Search and filter verified listings</p>
+        </div>
         <!-- Filters & Search – one row, same height, search bar aligned with filters -->
         <div class="mb-10">
             <form method="GET" class="w-full">

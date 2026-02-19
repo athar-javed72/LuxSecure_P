@@ -1,4 +1,5 @@
 {
+    "name": "luxsecure",
     "private": true,
     "type": "module",
     "scripts": {

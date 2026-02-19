@@ -24,6 +24,7 @@
             <ul class="space-y-1.5 text-xs md:text-sm">
                 <li><a href="{{ route('home') }}" class="hover:underline text-gray-200">Home</a></li>
                 <li><a href="{{ route('properties') }}" class="hover:underline text-gray-200">Properties</a></li>
+                <li><a href="{{ route('home') }}#why-luxsecure" class="hover:underline text-gray-200">Why LuxSecure</a></li>
                 <li><a href="{{ route('contact') }}" class="hover:underline text-gray-200">Contact Us</a></li>
                 <li><a href="{{ route('login.form') }}" class="hover:underline text-gray-200">Login / Register</a></li>
             </ul>

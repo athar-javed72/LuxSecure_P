@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Contact Inquiry</title>
+    <title>New Contact Inquiry | {{ config('app.name') }}</title>
 </head>
 <body style="font-family: sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-    <h2 style="color: #4F46E5;">New Contact Inquiry</h2>
+    <h2 style="color: #4F46E5;">New Contact Inquiry — {{ config('app.name') }}</h2>
     <p><strong>From:</strong> {{ $inquiry->name }}</p>
     <p><strong>Email:</strong> {{ $inquiry->email }}</p>
     <p><strong>Message:</strong></p>
@@ -14,6 +14,6 @@
         {{ $inquiry->message }}
     </div>
     <p style="color: #666; font-size: 12px;">Received at {{ $inquiry->created_at->format('F j, Y g:i A') }}</p>
-    <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 11px;">Developed by <strong style="color: #6b7280;">Nexora Labs</strong></p>
+    <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 11px;">{{ config('app.name') }} — Developed by <strong style="color: #6b7280;">Nexora Labs</strong></p>
 </body>
 </html>

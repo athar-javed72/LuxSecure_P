@@ -1,6 +1,6 @@
 @extends('include.master')
 
-@section('title', $property->title . ' | LuxSecure')
+@section('title', $property->title)
 
 @section('content')
 <div class="max-w-5xl mx-auto py-12 px-4">

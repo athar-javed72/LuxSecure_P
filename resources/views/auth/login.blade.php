@@ -1,6 +1,7 @@
 @extends('include.master')
 
 @section('title', 'Login')
+@section('meta_description', 'Sign in to your LuxSecure account.')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
