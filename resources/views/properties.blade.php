@@ -6,26 +6,26 @@
 <div class="bg-gray-50 min-h-screen py-10">
     <div class="max-w-7xl mx-auto px-4">
         <h1 class="text-4xl font-bold mb-6 text-indigo-900 mt-10">Find Your Dream Property</h1>
-        <!-- Filters & Search -->
+        <!-- Filters & Search – one row, same height, search bar aligned with filters -->
         <div class="mb-10">
             <form method="GET" class="w-full">
-                <div class="flex flex-col md:flex-row md:items-end gap-4 md:gap-6 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 p-6">
-                    <div class="flex-1 flex flex-col justify-end">
-                        <label for="search" class="block text-xs font-semibold text-slate-600 mb-1">Search</label>
-                        <input id="search" type="text" name="search" placeholder="Search by location or title..." value="{{ request('search') }}" class="filter-input">
+                <div class="flex flex-col sm:flex-row gap-4 sm:items-end bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 p-5">
+                    <div class="flex-1 min-w-0 flex flex-col">
+                        <label for="search" class="block text-xs font-semibold text-slate-600 mb-1.5">Search</label>
+                        <input id="search" type="text" name="search" placeholder="Search by location or title..." value="{{ request('search') }}" class="filter-input h-12">
                     </div>
-                    <div class="w-full md:w-48 flex flex-col">
-                        <label for="type" class="block text-xs font-semibold text-slate-600 mb-1">Type</label>
-                        <select id="type" name="type" class="filter-input">
+                    <div class="w-full sm:w-44 min-w-0 flex flex-col">
+                        <label for="type" class="block text-xs font-semibold text-slate-600 mb-1.5">Type</label>
+                        <select id="type" name="type" class="filter-input h-12">
                             <option value="">All Types</option>
                             @foreach(\App\Models\Property::TYPES as $t)
                                 <option value="{{ $t }}" {{ request('type') == $t ? 'selected' : '' }}>{{ $t }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="w-full md:w-48 flex flex-col">
-                        <label for="price" class="block text-xs font-semibold text-slate-600 mb-1">Price</label>
-                        <select id="price" name="price" class="filter-input">
+                    <div class="w-full sm:w-44 min-w-0 flex flex-col">
+                        <label for="price" class="block text-xs font-semibold text-slate-600 mb-1.5">Price</label>
+                        <select id="price" name="price" class="filter-input h-12">
                             <option value="">Any Price</option>
                             <option value="0-30000000" {{ request('price') == '0-30000000' ? 'selected' : '' }}>Below 3 Crore</option>
                             <option value="30000001-60000000" {{ request('price') == '30000001-60000000' ? 'selected' : '' }}>3-6 Crore</option>
@@ -33,9 +33,9 @@
                             <option value="100000001-1000000000" {{ request('price') == '100000001-1000000000' ? 'selected' : '' }}>10 Crore+</option>
                         </select>
                     </div>
-                    <div class="flex flex-col justify-end w-full md:w-auto">
-                        <label class="block text-xs font-semibold text-slate-600 mb-1 opacity-0 md:opacity-100">Filter</label>
-                        <button type="submit" class="w-full md:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition h-12">Filter</button>
+                    <div class="w-full sm:w-auto flex flex-col">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1.5 invisible sm:visible">Apply</label>
+                        <button type="submit" class="h-12 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition cursor-pointer">Filter</button>
                     </div>
                 </div>
             </form>
