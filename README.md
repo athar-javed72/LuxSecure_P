@@ -1,6 +1,12 @@
 # LuxSecure
 
+**Developed by Nexora Labs**
+
 A production-ready Laravel property listing and management platform with user authentication, admin panel, favorites, contact inquiries, and REST API.
+
+## Product ownership
+
+LuxSecure is an **in-house product** of **Nexora Labs**, the official software house and product owner. All features, modules, and architecture are developed for internal use, reusable SaaS-style expansion, and future client deployments under Nexora Labs. This codebase represents an enterprise-level, portfolio-ready asset maintained by Nexora Labs.
 
 ## Features
 
@@ -95,3 +101,7 @@ Includes basic tests for registration, login, property listing, and API.
 ## License
 
 MIT.
+
+---
+
+*LuxSecure — Developed by Nexora Labs*

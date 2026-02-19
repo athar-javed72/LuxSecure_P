@@ -14,5 +14,6 @@
         {{ $inquiry->message }}
     </div>
     <p style="color: #666; font-size: 12px;">Received at {{ $inquiry->created_at->format('F j, Y g:i A') }}</p>
+    <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 11px;">Developed by <strong style="color: #6b7280;">Nexora Labs</strong></p>
 </body>
 </html>

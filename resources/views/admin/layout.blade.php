@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 min-h-screen flex flex-col">
     <header class="bg-indigo-900 text-white shadow">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             <a href="{{ route('admin.dashboard') }}" class="font-bold text-xl">LuxSecure Admin</a>
@@ -25,7 +25,7 @@
             </nav>
         </div>
     </header>
-    <main class="max-w-7xl mx-auto px-4 py-8">
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1">
         @if (session('success'))
             <div class="mb-4 p-4 bg-green-100 text-green-800 rounded-lg">{{ session('success') }}</div>
         @endif
@@ -34,5 +34,11 @@
         @endif
         @yield('content')
     </main>
+    <footer class="border-t border-gray-200 bg-white mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-center sm:text-left text-xs text-gray-500">
+            <span>© {{ date('Y') }} LuxSecure Admin</span>
+            @include('include.branding', ['brandingClass' => 'text-gray-500', 'strongClass' => 'text-indigo-600 font-medium'])
+        </div>
+    </footer>
 </body>
 </html>

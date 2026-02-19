@@ -66,15 +66,16 @@
             </div>
         </div>
     </div>
-    <div class="border-t border-white/10 pt-6 pb-3 px-6 max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center text-xs text-gray-400 bg-transparent">
+    <div class="border-t border-white/10 pt-6 pb-3 px-6 max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center gap-3 text-xs text-gray-400 bg-transparent">
         <div class="flex flex-wrap space-x-4 mb-2 md:mb-0">
             <a href="#" class="hover:underline">Privacy Policy</a>
             <a href="#" class="hover:underline">Terms of Use</a>
             <a href="#" class="hover:underline">Accessibility</a>
             <a href="#" class="hover:underline">Sitemap</a>
         </div>
-        <div>
-            © {{ date('Y') }} LuxSecure Inc. All rights reserved. | Crafted with elegance and precision for your real estate needs.
+        <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2 text-center sm:text-left">
+            <span>© {{ date('Y') }} LuxSecure. All rights reserved.</span>
+            @include('include.branding', ['brandingClass' => 'text-gray-400/90 text-xs', 'strongClass' => 'text-gray-300 font-medium'])
         </div>
     </div>
 </footer>
