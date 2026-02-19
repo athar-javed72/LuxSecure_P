@@ -1,4 +1,3 @@
-
 @extends('include.master')
 
 @section('title', 'Register')
@@ -8,47 +7,49 @@
 @endpush
 
 @section('content')
-<div class="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 py-12 px-4 sm:px-6 lg:px-8 mt-10">
-    <div class="flex w-full max-w-4xl bg-white/80 rounded-2xl shadow-2xl overflow-hidden">
-        <!-- Lottie Animation Sidebar (no change) -->
-        <div class="hidden md:flex flex-col justify-center items-center w-1/2 bg-gradient-to-br from-indigo-700 to-purple-700 p-8">
-            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_ktwnwv5m.json"  background="transparent"  speed="1"  style="width: 320px; height: 320px;"  loop  autoplay></lottie-player>
-            <h3 class="text-white text-2xl font-bold mt-6">Join LuxSecure!</h3>
-            <p class="text-indigo-100 mt-2 text-center">Create your account and experience secure, elegant access to your dashboard.</p>
+<div class="flex min-h-[70vh] items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="flex w-full max-w-4xl rounded-2xl overflow-hidden auth-card bg-white/90 backdrop-blur">
+        <div class="auth-side">
+            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_ktwnwv5m.json" background="transparent" speed="1" style="width: 260px; height: 260px;" loop autoplay></lottie-player>
+            <h3 class="auth-side-title">Join LuxSecure</h3>
+            <p class="auth-side-text">Create your account in seconds.</p>
         </div>
-        <!-- Register Form -->
         <div class="w-full md:w-1/2 p-8 flex flex-col justify-center">
-            <form method="POST" action="{{ route('register') }}" class="space-y-6">
+            <form method="POST" action="{{ route('register') }}" class="space-y-5">
                 @csrf
-                <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">Create Your Account</h2>
-                @if (session('status'))
+                <h2 class="text-2xl font-bold text-gray-900 text-center">Register</h2>
+                @if(session('status'))
                     <div class="alert alert-success">{{ session('status') }}</div>
                 @endif
-                <div class="form-group">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                    <input id="name" type="text" name="name" placeholder="e.g. Ayesha Khan" value="{{ old('name') }}" required autofocus class="input-field">
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+                    </div>
+                @endif
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Full name</label>
+                    <input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="e.g. Ayesha Khan" required autofocus class="auth-input">
                 </div>
-                <div class="form-group">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                    <input id="email" type="email" name="email" placeholder="e.g. ayesha@email.com" value="{{ old('email') }}" required class="input-field">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="you@example.com" required class="auth-input">
                 </div>
-                <div class="form-group">
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number <span class="text-gray-400">(optional)</span></label>
-                    <input id="phone" type="tel" name="phone" placeholder="03xx-xxxxxxx" value="{{ old('phone') }}" class="input-field">
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone <span class="text-gray-400">(optional)</span></label>
+                    <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" placeholder="03xx-xxxxxxx" class="auth-input">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="password" type="password" name="password" placeholder="At least 8 characters" required class="input-field">
-                    <span class="text-xs text-gray-500 mt-1 block">Minimum 8 characters, use letters & numbers.</span>
+                    <input id="password" type="password" name="password" placeholder="Min 8 characters" required class="auth-input">
                 </div>
-                <div class="form-group">
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Re-enter your password" required class="input-field">
+                <div>
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm password</label>
+                    <input id="password_confirmation" type="password" name="password_confirmation" placeholder="••••••••" required class="auth-input">
                 </div>
-                <button type="submit" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition">Create Account</button>
-                <div class="flex justify-between mt-4 text-sm">
-                    <a href="{{ route('login.form') }}" class="text-indigo-600 hover:underline">Already registered?</a>
-                </div>
+                <button type="submit" class="auth-btn">Create account</button>
+                <p class="text-center text-sm text-gray-600">
+                    Already have an account? <a href="{{ route('login.form') }}" class="auth-link">Login</a>
+                </p>
             </form>
         </div>
     </div>

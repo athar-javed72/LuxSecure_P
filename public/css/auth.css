@@ -1,76 +1,150 @@
+/* LuxSecure Auth – professional, concise, simple light fields */
 
-/* auth.css */
-
-/* Lottie sidebar utility (unchanged) */
-.lottie-sidebar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #4338ca, #a21caf);
-  padding: 2rem;
+.auth-card {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
-/* Form section utility (optional, not used directly) */
-.form-section {
-  padding: 2rem;
-  background: rgba(255,255,255,0.85);
-  border-radius: 1.5rem;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-}
-
-/* Alerts (for session messages) */
-.alert {
-  padding: 12px 20px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  font-weight: 500;
-}
-.alert-success {
-  background: #e7f6e7;
-  color: #2e7d32;
-  border: 1px solid #a5d6a7;
-}
-.alert-danger {
-  background: #fbe9e7;
-  color: #d32f2f;
-  border: 1px solid #ef9a9a;
-}
-
-/* Consistent input styling for all fields */
-.form-group {
-  margin-bottom: 1.25rem;
-}
-
-.input-field {
+/* Override global dark inputs: auth & contact use simple light fields */
+.auth-card input,
+.auth-card textarea,
+.contact-form input,
+.contact-form textarea,
+input.auth-input,
+textarea.auth-input {
   margin-top: 0.25rem;
   display: block;
   width: 100%;
   border-radius: 0.75rem;
-  border: 1px solid #22223b;
-  background: #23233a;
-  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  padding: 0.625rem 1rem;
   font-size: 1rem;
-  color: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  color: #1e293b;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.input-field:focus {
+.auth-card input::placeholder,
+.auth-card textarea::placeholder,
+.contact-form input::placeholder,
+.contact-form textarea::placeholder,
+input.auth-input::placeholder,
+textarea.auth-input::placeholder {
+  color: #94a3b8;
+}
+.auth-card input:focus,
+.auth-card textarea:focus,
+.contact-form input:focus,
+.contact-form textarea:focus,
+input.auth-input:focus,
+textarea.auth-input:focus {
   outline: none;
   border-color: #6366f1;
-  box-shadow: 0 0 0 2px #6366f133;
-}
-.input-field::placeholder {
-  color: #bcbcbc;
-  font-style: italic;
-  opacity: 1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  background: #fff;
 }
 
-/* Ensure phone number placeholder matches style in all browsers */
-input#phone::placeholder,
-input#phone:-ms-input-placeholder,
-input#phone::-ms-input-placeholder {
-  color: #888 !important;
-  font-style: italic;
-  opacity: 1 !important;
+.auth-input {
+  margin-top: 0.25rem;
+  display: block;
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+  color: #1e293b;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.auth-input::placeholder {
+  color: #94a3b8;
+}
+.auth-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+/* Alerts */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.alert-success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.alert-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+.alert-danger ul {
+  margin: 0;
+  padding-left: 1rem;
+  list-style: disc;
+}
+.alert-danger li + li {
+  margin-top: 0.25rem;
+}
+
+.auth-btn {
+  display: block;
+  width: 100%;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: #4f46e5;
+  border: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.auth-btn:hover {
+  background: #4338ca;
+}
+.auth-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+}
+
+.auth-link {
+  color: #4f46e5;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.auth-link:hover {
+  color: #4338ca;
+}
+
+.auth-side {
+  display: none;
+}
+@media (min-width: 768px) {
+  .auth-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    background: linear-gradient(135deg, #4338ca, #7c3aed);
+    padding: 2rem;
+  }
+}
+
+.auth-side-title {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+.auth-side-text {
+  color: rgba(224, 231, 255, 0.9);
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  text-align: center;
 }

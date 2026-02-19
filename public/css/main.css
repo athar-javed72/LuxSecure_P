@@ -79,6 +79,35 @@ input:focus {
   background-color: #1f1f3b;
 }
 
+/* Filter bar & high-level form inputs – light, professional */
+.filter-input {
+  height: 3rem;
+  width: 100%;
+  padding: 0 1rem;
+  font-size: 0.9375rem;
+  color: #1e293b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.filter-input::placeholder {
+  color: #94a3b8;
+}
+.filter-input:hover {
+  border-color: #cbd5e1;
+}
+.filter-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  background: #fff;
+}
+select.filter-input {
+  cursor: pointer;
+  appearance: auto;
+}
+
 button, .btn {
   width: 100%;
   padding: 12px;

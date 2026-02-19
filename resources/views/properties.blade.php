@@ -9,14 +9,14 @@
         <!-- Filters & Search -->
         <div class="mb-10">
             <form method="GET" class="w-full">
-                <div class="flex flex-col md:flex-row md:items-end gap-4 md:gap-6 bg-white/90 rounded-2xl shadow-lg p-6">
+                <div class="flex flex-col md:flex-row md:items-end gap-4 md:gap-6 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 p-6">
                     <div class="flex-1 flex flex-col justify-end">
-                        <label for="search" class="block text-xs font-semibold text-gray-600">Search</label>
-                        <input id="search" type="text" name="search" placeholder="Search by location or title..." value="{{ request('search') }}" class="input-field bg-gray-900 text-white placeholder-gray-400 border-0 focus:ring-2 focus:ring-indigo-400 h-12 mt-1">
+                        <label for="search" class="block text-xs font-semibold text-slate-600 mb-1">Search</label>
+                        <input id="search" type="text" name="search" placeholder="Search by location or title..." value="{{ request('search') }}" class="filter-input">
                     </div>
                     <div class="w-full md:w-48 flex flex-col">
-                        <label for="type" class="block text-xs font-semibold text-gray-600 mb-1">Type</label>
-                        <select id="type" name="type" class="input-field bg-gray-900 text-white border-0 focus:ring-2 focus:ring-indigo-400 h-12">
+                        <label for="type" class="block text-xs font-semibold text-slate-600 mb-1">Type</label>
+                        <select id="type" name="type" class="filter-input">
                             <option value="">All Types</option>
                             @foreach(\App\Models\Property::TYPES as $t)
                                 <option value="{{ $t }}" {{ request('type') == $t ? 'selected' : '' }}>{{ $t }}</option>
@@ -24,8 +24,8 @@
                         </select>
                     </div>
                     <div class="w-full md:w-48 flex flex-col">
-                        <label for="price" class="block text-xs font-semibold text-gray-600 mb-1">Price</label>
-                        <select id="price" name="price" class="input-field bg-gray-900 text-white border-0 focus:ring-2 focus:ring-indigo-400 h-12">
+                        <label for="price" class="block text-xs font-semibold text-slate-600 mb-1">Price</label>
+                        <select id="price" name="price" class="filter-input">
                             <option value="">Any Price</option>
                             <option value="0-30000000" {{ request('price') == '0-30000000' ? 'selected' : '' }}>Below 3 Crore</option>
                             <option value="30000001-60000000" {{ request('price') == '30000001-60000000' ? 'selected' : '' }}>3-6 Crore</option>
@@ -34,8 +34,8 @@
                         </select>
                     </div>
                     <div class="flex flex-col justify-end w-full md:w-auto">
-                        <label class="block text-xs font-semibold text-transparent mb-1">Filter</label>
-                        <button type="submit" class="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow transition h-12">Filter</button>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1 opacity-0 md:opacity-100">Filter</label>
+                        <button type="submit" class="w-full md:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition h-12">Filter</button>
                     </div>
                 </div>
             </form>

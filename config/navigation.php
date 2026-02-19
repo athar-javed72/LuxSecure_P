@@ -18,7 +18,7 @@ return [
             'label' => 'Why LuxSecure',
             'route' => 'home',
             'anchor' => '#why-luxsecure',
-            'active' => ['home'],
+            'active' => [], // Only Home shows active on home; hash-based active can be added via JS if needed
         ],
         [
             'label' => 'Contact',

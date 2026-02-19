@@ -1,40 +1,45 @@
 @extends('include.master')
 
+@section('title', 'Contact Us | LuxSecure')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+@endpush
+
 @section('content')
-<div class="max-w-xl mx-auto py-12 px-6">
-    <h1 class="text-3xl font-bold mb-4 mt-23">Contact Us</h1>
-    @if (session('success'))
-        <div class="mb-4 p-4 bg-green-100 text-green-800 rounded-lg">{{ session('success') }}</div>
-    @endif
-    @if ($errors->any())
-        <div class="mb-4 p-4 bg-red-100 text-red-800 rounded-lg">
-            <ul class="list-disc list-inside">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+<div class="max-w-2xl mx-auto py-12 px-4 sm:px-6">
+    <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 auth-card">
+        <h1 class="text-2xl font-bold text-slate-900 mb-2">Contact Us</h1>
+        <p class="text-slate-600 text-sm mb-6">Send us a message and we’ll get back to you soon.</p>
+        @if (session('success'))
+            <div class="alert alert-success mb-6">{{ session('success') }}</div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger mb-6">
+                <ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+            </div>
+        @endif
+        <form method="POST" action="{{ route('contact.store') }}" class="contact-form space-y-5">
+            @csrf
+            <div>
+                <label for="name" class="block text-sm font-medium text-slate-700">Name</label>
+                <input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="Your name" required class="auth-input">
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="you@example.com" required class="auth-input">
+            </div>
+            <div>
+                <label for="message" class="block text-sm font-medium text-slate-700">Message</label>
+                <textarea id="message" name="message" rows="4" placeholder="Your message..." required class="auth-input">{{ old('message') }}</textarea>
+            </div>
+            <button type="submit" class="auth-btn">Send Message</button>
+        </form>
+        <div class="mt-8 pt-6 border-t border-slate-200 text-slate-600 text-sm">
+            <p><strong>Address:</strong> 123 Estate Avenue, City, Country</p>
+            <p class="mt-1"><strong>Phone:</strong> +1 (555) 123-4567</p>
+            <p class="mt-1"><strong>Email:</strong> info@luxsecure.com</p>
         </div>
-    @endif
-    <form method="POST" action="{{ route('contact.store') }}" class="space-y-6">
-        @csrf
-        <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-            <input id="name" type="text" name="name" value="{{ old('name') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
-        </div>
-        <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
-        </div>
-        <div>
-            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-            <textarea id="message" name="message" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>{{ old('message') }}</textarea>
-        </div>
-        <button type="submit" class="bg-indigo-700 text-white px-6 py-2 rounded-md hover:bg-indigo-800">Send Message</button>
-    </form>
-    <div class="mt-8 text-gray-600">
-        <p><strong>Address:</strong> 123 Estate Avenue, City, Country</p>
-        <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-        <p><strong>Email:</strong> info@luxsecure.com</p>
     </div>
 </div>
 @endsection

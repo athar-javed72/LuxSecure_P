@@ -1,52 +1,52 @@
 @extends('include.master')
 
+@section('title', 'Reset Password')
+
 @push('styles')
-<link href="{{ asset('css/auth.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 @endpush
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 fade-in">
-            <div class="auth-form">
-                <h4 class="mb-3 text-center">Reset Password</h4>
-                {{-- Flash Messages --}}
-                @if(session('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
-                @endif
-                @if(session('status'))
-                    <div class="alert alert-success">{{ session('status') }}</div>
-                @endif
-                {{-- Error Messages --}}
-                @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <div class="fade-in">
-                    <form method="POST" action="{{ url('/reset-password') }}">
-                        @csrf
-                        <input type="hidden" name="token" value="{{ $token }}">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required autofocus>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                        </div>
-                        <button type="submit" class="btn btn-dark w-100">Reset Password</button>
-                    </form>
+<div class="flex min-h-[70vh] items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="flex w-full max-w-4xl rounded-2xl overflow-hidden auth-card bg-white/90 backdrop-blur">
+        <div class="auth-side">
+            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_4kx2q32n.json" background="transparent" speed="1" style="width: 260px; height: 260px;" loop autoplay></lottie-player>
+            <h3 class="auth-side-title">Set new password</h3>
+            <p class="auth-side-text">Choose a strong password.</p>
+        </div>
+        <div class="w-full md:w-1/2 p-8 flex flex-col justify-center">
+            @if(session('success'))
+                <div class="alert alert-success mb-4">{{ session('success') }}</div>
+            @endif
+            @if(session('status'))
+                <div class="alert alert-success mb-4">{{ session('status') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="alert alert-danger mb-4">
+                    <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
                 </div>
-            </div>
+            @endif
+            <form method="POST" action="{{ url('/reset-password') }}" class="space-y-5">
+                @csrf
+                <input type="hidden" name="token" value="{{ $token }}">
+                <h2 class="text-2xl font-bold text-gray-900 text-center">Reset password</h2>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" value="{{ old('email', $email ?? '') }}" placeholder="you@example.com" required autofocus class="auth-input">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">New password</label>
+                    <input type="password" id="password" name="password" placeholder="Min 8 characters" required class="auth-input">
+                </div>
+                <div>
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm password</label>
+                    <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required class="auth-input">
+                </div>
+                <button type="submit" class="auth-btn">Reset password</button>
+                <p class="text-center text-sm">
+                    <a href="{{ route('login.form') }}" class="auth-link">Back to login</a>
+                </p>
+            </form>
         </div>
     </div>
 </div>
