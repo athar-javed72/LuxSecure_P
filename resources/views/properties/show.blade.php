@@ -3,11 +3,20 @@
 @section('title', $property->title)
 
 @section('content')
-<div class="max-w-5xl mx-auto py-12 px-4">
+<div class="max-w-5xl mx-auto py-8 md:py-12 px-4">
+    <nav class="mb-6 text-sm text-slate-600" aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-center gap-2">
+            <li><a href="{{ route('home') }}" class="hover:text-indigo-600 transition">Home</a></li>
+            <li aria-hidden="true">/</li>
+            <li><a href="{{ route('properties') }}" class="hover:text-indigo-600 transition">Properties</a></li>
+            <li aria-hidden="true">/</li>
+            <li class="text-slate-900 font-medium truncate max-w-[200px] sm:max-w-none" aria-current="page">{{ $property->title }}</li>
+        </ol>
+    </nav>
     @if (session('success'))
-        <div class="mb-4 p-4 bg-green-100 text-green-800 rounded-lg">{{ session('success') }}</div>
+        <div class="mb-4 p-4 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200">{{ session('success') }}</div>
     @endif
-    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
         <div class="grid md:grid-cols-2 gap-0">
             <div class="relative">
                 <img src="{{ $property->primary_image_url }}" alt="{{ $property->title }}" class="w-full h-80 md:h-full object-cover">
@@ -49,8 +58,8 @@
             </div>
         @endif
     </div>
-    <div class="mt-6">
-        <a href="{{ route('properties') }}" class="text-indigo-600 hover:underline">&larr; Back to listings</a>
+    <div class="mt-8">
+        <a href="{{ route('properties') }}" class="inline-flex items-center gap-2 text-indigo-600 font-semibold hover:text-indigo-700 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to listings</a>
     </div>
 </div>
 @endsection

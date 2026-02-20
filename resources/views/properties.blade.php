@@ -72,8 +72,11 @@
                     </div>
                 </div>
             @empty
-                <div class="col-span-3 text-center text-gray-500 py-12">
-                    No properties found matching your criteria.
+                <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <i class="fas fa-search text-5xl text-slate-300 mb-4" aria-hidden="true"></i>
+                    <h2 class="text-xl font-bold text-slate-800 mb-2">No properties found</h2>
+                    <p class="text-slate-600 text-center max-w-md mb-6">Try adjusting your search or filters, or browse all listings.</p>
+                    <a href="{{ route('properties') }}" class="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition">View all properties</a>
                 </div>
             @endforelse
         </div>

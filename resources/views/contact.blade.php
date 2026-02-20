@@ -35,10 +35,11 @@
             </div>
             <button type="submit" class="auth-btn">Send Message</button>
         </form>
-        <div class="mt-8 pt-6 border-t border-slate-200 text-slate-600 text-sm">
-            <p><strong>Address:</strong> 123 Estate Avenue, City, Country</p>
-            <p class="mt-1"><strong>Phone:</strong> +1 (555) 123-4567</p>
-            <p class="mt-1"><strong>Email:</strong> info@luxsecure.com</p>
+        <div class="mt-8 pt-6 border-t border-slate-200 text-slate-600 text-sm space-y-2">
+            <p><strong class="text-slate-700">Address:</strong> 123 Estate Avenue, City, Country</p>
+            <p><strong class="text-slate-700">Phone:</strong> +92 300 0000000</p>
+            <p><strong class="text-slate-700">Email:</strong> support@luxsecure.com</p>
+            <p class="text-xs text-slate-500 pt-2">Mon–Sat, 10:00 AM – 7:00 PM (PKT)</p>
         </div>
     </div>
 </div>
