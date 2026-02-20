@@ -27,13 +27,14 @@
 
     @stack('styles')
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
+    <a href="#main-content" class="sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:p-4 focus:bg-indigo-600 focus:text-white focus:rounded-lg focus:w-auto focus:h-auto focus:overflow-visible focus:[clip:auto]">Skip to main content</a>
 
     {{-- Global Navbar --}}
     @include('include.navbar')
 
     {{-- Main Content --}}
-    <main class="pt-20 md:pt-24 pb-10 mx-4 max-w-7xl lg:mx-auto">
+    <main id="main-content" class="pt-20 md:pt-24 pb-10 mx-4 max-w-7xl lg:mx-auto flex-1">
         @yield('home_content')
         @yield('content')
     </main>

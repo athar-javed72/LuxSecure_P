@@ -143,72 +143,82 @@
                         </a>
                     @endif
 
-                    <button
-                        type="button"
-                        class="relative inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-full bg-white/5 text-slate-100 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
-                        @click="profileOpen = !profileOpen"
-                        :aria-expanded="profileOpen"
-                        aria-haspopup="true"
-                        id="profile-menu-button-desktop"
-                    >
-                        <span class="flex flex-col text-left leading-tight">
-                            <span class="text-[11px] uppercase tracking-[0.22em] text-slate-300/80">
-                                {{ $variant === 'admin' ? 'Administrator' : 'Signed in' }}
+                    <div class="relative" @click.outside="profileOpen = false">
+                        <button
+                            type="button"
+                            class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-full bg-white/5 text-slate-100 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                            @click="profileOpen = !profileOpen"
+                            :aria-expanded="profileOpen"
+                            aria-haspopup="true"
+                            id="profile-menu-button-desktop"
+                        >
+                            <span class="flex flex-col text-left leading-tight">
+                                <span class="text-[11px] uppercase tracking-[0.22em] text-slate-300/80">
+                                    {{ $variant === 'admin' ? 'Administrator' : 'Signed in' }}
+                                </span>
+                                <span class="text-xs font-semibold truncate max-w-[140px]">
+                                    {{ Auth::user()->name }}
+                                </span>
                             </span>
-                            <span class="text-xs font-semibold truncate max-w-[140px]">
-                                {{ Auth::user()->name }}
+                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10 text-[13px] font-semibold uppercase">
+                                {{ mb_substr(Auth::user()->name, 0, 1, 'UTF-8') }}
                             </span>
-                        </span>
-                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10 text-[13px] font-semibold uppercase">
-                            {{ mb_substr(Auth::user()->name, 0, 1, 'UTF-8') }}
-                        </span>
-                        <i class="fas fa-chevron-down text-[10px] text-slate-300/80" aria-hidden="true"></i>
-                    </button>
+                            <i class="fas fa-chevron-down text-[10px] text-slate-300/80 transition-transform duration-200" :class="profileOpen ? 'rotate-180' : ''" aria-hidden="true"></i>
+                        </button>
 
-                    <div
-                        x-cloak
-                        x-show="profileOpen"
-                        x-transition.origin.top.right
-                        @click.outside="profileOpen = false"
-                        class="absolute right-4 top-[64px] w-56 rounded-2xl bg-slate-950/98 border border-slate-800/80 shadow-2xl shadow-black/60 overflow-hidden"
-                        role="menu"
-                        aria-labelledby="profile-menu-button-desktop"
-                    >
-                        <div class="px-4 py-3 border-b border-slate-800/80">
-                            <p class="text-xs text-slate-400">Signed in as</p>
-                            <p class="mt-1 text-sm font-semibold text-slate-100 truncate">{{ Auth::user()->email }}</p>
-                        </div>
+                        <div
+                            x-cloak
+                            x-show="profileOpen"
+                            x-transition:enter="transition ease-out duration-150"
+                            x-transition:enter-start="opacity-0 scale-95"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-100"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl shadow-black/50 overflow-hidden z-[100]"
+                            role="menu"
+                            aria-labelledby="profile-menu-button-desktop"
+                        >
+                            <div class="px-4 py-3 border-b border-slate-700 bg-slate-800/50">
+                                <p class="text-xs text-slate-400">Signed in as</p>
+                                <p class="mt-1 text-sm font-semibold text-slate-100 truncate">{{ Auth::user()->email }}</p>
+                            </div>
 
-                        <div class="py-1 text-sm" role="none">
-                            @if($variant === 'admin')
-                                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 px-4 py-2 text-slate-100 hover:bg-slate-800/80" role="menuitem">
-                                    <i class="fas fa-gauge-high text-xs text-amber-300" aria-hidden="true"></i>
-                                    Dashboard
-                                </a>
-                            @else
-                                <a href="{{ route('profile') }}" class="flex items-center gap-2 px-4 py-2 text-slate-100 hover:bg-slate-800/80" role="menuitem">
-                                    <i class="fas fa-user-circle text-xs text-amber-300" aria-hidden="true"></i>
-                                    My Profile
-                                </a>
-                                <a href="{{ route('profile') }}#favorites" class="flex items-center gap-2 px-4 py-2 text-slate-100 hover:bg-slate-800/80" role="menuitem">
-                                    <i class="fas fa-heart text-xs text-rose-300" aria-hidden="true"></i>
-                                    Saved Properties
-                                </a>
-                            @endif
-                        </div>
+                            <div class="py-1 text-sm" role="none">
+                                @if($variant === 'admin')
+                                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 px-4 py-2.5 text-slate-100 hover:bg-slate-800 transition" role="menuitem">
+                                        <i class="fas fa-gauge-high text-xs text-amber-400 w-4" aria-hidden="true"></i>
+                                        Dashboard
+                                    </a>
+                                    <a href="{{ route('profile') }}" class="flex items-center gap-2 px-4 py-2.5 text-slate-100 hover:bg-slate-800 transition" role="menuitem">
+                                        <i class="fas fa-user-circle text-xs text-amber-400 w-4" aria-hidden="true"></i>
+                                        My Profile
+                                    </a>
+                                @else
+                                    <a href="{{ route('profile') }}" class="flex items-center gap-2 px-4 py-2.5 text-slate-100 hover:bg-slate-800 transition" role="menuitem">
+                                        <i class="fas fa-user-circle text-xs text-amber-400 w-4" aria-hidden="true"></i>
+                                        My Profile
+                                    </a>
+                                    <a href="{{ route('profile') }}#favorites" class="flex items-center gap-2 px-4 py-2.5 text-slate-100 hover:bg-slate-800 transition" role="menuitem">
+                                        <i class="fas fa-heart text-xs text-rose-400 w-4" aria-hidden="true"></i>
+                                        Saved Properties
+                                    </a>
+                                @endif
+                            </div>
 
-                        <div class="border-t border-slate-800/80 py-1" role="none">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button
-                                    type="submit"
-                                    class="w-full flex items-center gap-2 px-4 py-2 text-sm text-rose-300 hover:bg-rose-950/60 hover:text-rose-200"
-                                    role="menuitem"
-                                >
-                                    <i class="fas fa-sign-out-alt text-xs" aria-hidden="true"></i>
-                                    Logout
-                                </button>
-                            </form>
+                            <div class="border-t border-slate-700 py-1" role="none">
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button
+                                        type="submit"
+                                        class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-rose-300 hover:bg-rose-950/60 hover:text-rose-200 transition text-left"
+                                        role="menuitem"
+                                    >
+                                        <i class="fas fa-sign-out-alt text-xs w-4" aria-hidden="true"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 @endif

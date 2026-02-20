@@ -3,11 +3,14 @@
 @section('title', 'User: ' . $user->name)
 
 @section('content')
-<div class="mb-4">
-    <a href="{{ route('admin.users.index') }}" class="text-indigo-600 hover:underline">&larr; Back to Users</a>
+<div class="flex flex-wrap justify-between items-start gap-4 mb-6">
+    <h1 class="text-3xl font-bold text-slate-900">User Details</h1>
+    <a href="{{ route('admin.users.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold text-sm shadow-sm hover:bg-slate-50 hover:border-slate-300 transition">
+        <i class="fas fa-arrow-left text-xs" aria-hidden="true"></i> Back to Users
+    </a>
 </div>
-<div class="bg-white rounded-xl shadow p-6 max-w-2xl">
-    <h1 class="text-2xl font-bold text-gray-900 mb-6">User Details</h1>
+<div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 max-w-2xl">
+    <h2 class="text-xl font-bold text-slate-800 mb-6">{{ $user->name }}</h2>
     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
             <dt class="text-sm font-medium text-gray-500">ID</dt>

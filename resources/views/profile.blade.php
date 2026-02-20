@@ -9,7 +9,7 @@
 @section('content')
 <div class="max-w-4xl mx-auto py-12">
     @if (session('success'))
-        <div class="mb-4 p-4 bg-green-100 text-green-800 rounded-lg">{{ session('success') }}</div>
+        <div class="mb-4 p-4 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200">{{ session('success') }}</div>
     @endif
     <div class="bg-white/90 rounded-2xl shadow-xl p-8">
         <h1 class="text-3xl font-extrabold text-indigo-900 mb-8 text-center">My Profile</h1>
